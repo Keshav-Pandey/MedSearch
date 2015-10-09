@@ -1,0 +1,7 @@
+﻿Good queries:
+select ?out
+ WHERE {
+ <http://dbpedia.org/resource/Denosumab><http://dbpedia.org/ontology/abstract>?out FILTER langMatches(lang(?out),'en')}
+
+select ?out WHERE { ?out <http://dbpedia.org/property/tradename> ?use. ?use bif:contains "prolia"} 
+
