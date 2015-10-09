@@ -16,7 +16,8 @@
         <div data-role="header">
             <%--<a class="ui-btn-left ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-delete" href="#">Cancel</a>--%>
             <h1>MedSearch</h1>
-            <button class="ui-btn-right ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-check">Login</button>
+            <a href="#nav-panel" data-icon="bars" data-iconpos="notext">Menu</a>
+            <a href="#add-form" data-icon="gear" data-iconpos="notext" class="ui-icon-left">Add</a>
         </div>
 
 	    <div role="main" class="ui-content">
@@ -24,15 +25,48 @@
 
                 <div class="ui-field-contain">
                     <asp:Button runat="server" for="searchEntry" class="ui-btn ui-btn-inline ui-icon-search ui-btn-icon-left" href="#" onclick="performSearch" Text="Search"></asp:Button>
-                    <asp:TextBox id="searchEntry" name= "searchEntry" type="search" runat="server" AutoCompleteType="Search" OnTextChanged="performSearch"></asp:TextBox>
+                    <asp:TextBox id="searchEntry" name= "searchEntry"  ToolTip="Search for drugs or symptoms" type="search" runat="server" AutoCompleteType="Search" OnTextChanged="performSearch"></asp:TextBox>
                 </div>
                 <div class="ui-grid-a ui-responsive">
-                    <div id="outputimg" class="ui-block-a"><a class="ui-btn ui-shadow ui-corner-all" href="#"><img src="<%=searchImage%>" style="width:auto;height:auto;"/></a></div>
+                    <div id="outputimg" class="ui-block-a"><img src="<%=searchImage%>" style="width:auto;height:auto;" /></div>
                     <div id ="output" class="ui-block-b"><p class=" ui-shadow ui-corner-all" href="#" type="text"><%=searchResponse%></p></div>
                 </div>
             </form>
     	</div>
-    
+
+        <!-- Login panel , will see what to do with it later -->
+        <div data-role="panel" data-position="right" data-position-fixed="true" data-display="overlay" data-theme="a" id="add-form">
+
+        <form class="userform">
+
+        	<h2>Login</h2>
+
+            <label for="name">Username:</label>
+            <input type="text" name="name" id="name" value="" data-clear-btn="true" data-mini="true">
+
+            <label for="password">Password:</label>
+            <input type="password" name="password" id="password" value="" data-clear-btn="true" autocomplete="off" data-mini="true">
+
+            <div class="ui-grid-a">
+                <div class="ui-block-a"><a href="#" data-rel="close" class="ui-btn ui-shadow ui-corner-all ui-btn-b ui-mini">Cancel</a></div>
+                <div class="ui-block-b"><a href="#" data-rel="close" class="ui-btn ui-shadow ui-corner-all ui-btn-a ui-mini">Save</a></div>
+			</div>
+        </form>
+
+	</div><!-- /panel -->
+        <!-- Option panel , need to discuss on what all to keep -->
+        <div data-role="panel" data-position-fixed="true" data-display="push" data-theme="b" id="nav-panel">
+
+		<ul data-role="listview">
+            <li data-icon="delete"><a href="#" data-rel="close">Close menu</a></li>
+                <li><a href="#panel-fixed-page2">About</a></li>
+                <li><a href="#panel-fixed-page2">How to ?</a></li>
+                <li><a href="#panel-fixed-page2">Maps</a></li>
+                <li><a href="#panel-fixed-page2">PESIT</a></li>
+                <li><a href="#panel-fixed-page2">Help</a></li>
+		</ul>
+
+	</div><!-- /panel -->
     	<div data-role="footer">
 		    <h4>Special Topic - CSE</h4>
 	    </div>

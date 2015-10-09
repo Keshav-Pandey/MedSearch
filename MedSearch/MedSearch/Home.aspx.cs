@@ -103,7 +103,7 @@ namespace MedSearch
     }
     public partial class Home : System.Web.UI.Page
     {
-        public string searchResponse = "MedSearch<br>Search for drugs or symptoms";
+        public string searchResponse = "<center>MedSearch</center><br>A search engine designed for use in medical field with the assistance of machine learning,context awareness and personalization.";
         public string searchResult = "The given term coudn't be found. Please try again.";
         public string searchImage = "Content/images/Medicine.jpg";
         public string imageResult = "no image";
@@ -123,7 +123,8 @@ namespace MedSearch
                 if (searchResult != "invalid search query")
                 {
                     searchResponse = searchResult;
-                    if (search.getImageURI() == "no image")
+                    imageResult = search.getImageURI();
+                    if (imageResult == "no image")
                         searchImage = "Content/images/Medicine.jpg";
                     else
                         searchImage = imageResult;
