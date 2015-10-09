@@ -103,16 +103,20 @@ namespace MedSearch
     }
     public partial class Home : System.Web.UI.Page
     {
-        public string a1 = "Nothing";
+        public string searchResponse = "";
+        medsearch search;
         protected void Page_Load(object sender, EventArgs e)
         {
-            Console.Write("Hello");
-            medsearch test = new medsearch("Calpol");
-            a1 = test.getAbstract();
-            Console.Write(a1);
             
         }
-        
-        
+
+        protected void performSearch(object sender, EventArgs e)
+        {
+            if (searchEntry.Text != "")
+            {
+                search = new medsearch(searchEntry.Text);
+                searchResponse = search.getAbstract();
+            }
+        }
     }
 }
