@@ -103,7 +103,11 @@ namespace MedSearch
     }
     public partial class Home : System.Web.UI.Page
     {
-        public string searchResponse = "";
+        public string searchResponse = "MedSearch<br>Search for drugs or symptoms";
+        public string searchResult = "The given term coudn't be found. Please try again.";
+        public string searchImage = "Content/images/Medicine.jpg";
+        public string imageResult = "no image";
+
         medsearch search;
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -115,7 +119,20 @@ namespace MedSearch
             if (searchEntry.Text != "")
             {
                 search = new medsearch(searchEntry.Text);
-                searchResponse = search.getAbstract();
+                searchResult = search.getAbstract();
+                if (searchResult != "invalid search query")
+                {
+                    searchResponse = searchResult;
+                    if (search.getImageURI() == "no image")
+                        searchImage = "Content/images/Medicine.jpg";
+                    else
+                        searchImage = imageResult;
+                }
+                else
+                {
+                    searchResponse = "The given term coudn't be found. Please try again.";
+                    searchImage = "Content/images/Sad.jpg";
+                }
             }
         }
     }

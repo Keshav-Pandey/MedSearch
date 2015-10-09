@@ -26,9 +26,9 @@
                     <asp:Button runat="server" for="searchEntry" class="ui-btn ui-btn-inline ui-icon-search ui-btn-icon-left" href="#" onclick="performSearch" Text="Search"></asp:Button>
                     <asp:TextBox id="searchEntry" name= "searchEntry" type="search" runat="server" AutoCompleteType="Search" OnTextChanged="performSearch"></asp:TextBox>
                 </div>
-                
-                <div id ="output">
-                    <%=searchResponse%>
+                <div class="ui-grid-a ui-responsive">
+                    <div id="outputimg" class="ui-block-a"><a class="ui-btn ui-shadow ui-corner-all" href="#"><img src="<%=searchImage%>" style="width:auto;height:auto;"/></a></div>
+                    <div id ="output" class="ui-block-b"><p class=" ui-shadow ui-corner-all" href="#" type="text"><%=searchResponse%></p></div>
                 </div>
             </form>
     	</div>
