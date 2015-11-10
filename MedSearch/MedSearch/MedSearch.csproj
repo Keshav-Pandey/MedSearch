@@ -60,6 +60,7 @@
       <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Data.Services.Client" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -303,6 +304,7 @@
     <Content Include="Scripts\jquery.mobile-1.4.5.js" />
     <Content Include="Scripts\jquery.mobile-1.4.5.min.js" />
     <Content Include="Scripts\jquery.mobile-1.4.5.min.map" />
+    <None Include="Properties\PublishProfiles\IIS.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -318,6 +320,7 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BingSynonymsContainer.cs" />
     <Compile Include="Home.aspx.cs">
       <DependentUpon>Home.aspx</DependentUpon>
     </Compile>
