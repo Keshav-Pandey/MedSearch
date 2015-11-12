@@ -321,6 +321,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BingSynonymsContainer.cs" />
+    <Compile Include="DailyMed.cs" />
     <Compile Include="Home.aspx.cs">
       <DependentUpon>Home.aspx</DependentUpon>
     </Compile>
@@ -328,6 +329,7 @@
       <DependentUpon>Home.aspx</DependentUpon>
     </Compile>
     <Compile Include="medsearch.cs" />
+    <Compile Include="PillBox.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <PropertyGroup>

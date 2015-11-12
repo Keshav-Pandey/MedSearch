@@ -33,7 +33,7 @@
                     <div id ="output" class="ui-block-b"><div class="ui-bar ui-bar-a" style="height:auto;"><p class="ui-shadow ui-corner-all" type="text"><%=searchResponse%></p></div></div>
                 </div>
                 <div class="ui-grid-a ui-responsive">
-                    <div id="synm" class="ui-block-a"><div class="ui-bar ui-bar-a" style="height:auto;"><center><%=searchSynonyms%></center></div></div>
+                    <div id="synm" class="ui-block-a"><div class="ui-bar ui-bar-a" style="height:auto;"><%=searchSynonyms%></div></div>
                     <div id ="maps" class="ui-block-b"><div class="ui-bar ui-bar-a" style="height:auto;"><p class="ui-shadow ui-corner-all" type="text"><%=searchResponse%></p></div></div>
                 </div>
             </form>

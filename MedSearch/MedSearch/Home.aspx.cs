@@ -127,7 +127,7 @@ namespace MedSearch
         public string searchResult = "The given term coudn't be found. Please try again.";
         public string searchImage = "Content/images/Medicine.jpg";
         public string imageResult = "no image";
-        public string searchSynonyms = "Did not find any";
+        public string searchSynonyms = "No related medicine.";
 
         medsearch search;
         protected void Page_Load(object sender, EventArgs e)
@@ -137,29 +137,29 @@ namespace MedSearch
 
         protected void performSearch(object sender, EventArgs e)
         {
-            findSynonyms();
-            //if (searchEntry.Text != "")
-            //{
-            //    search = new medsearch(searchEntry.Text);
-            //    searchResult = search.getAbstract();
-            //    if (searchResult != "invalid search query")
-            //    {
-            //        searchResponse = searchResult;
-            //        imageResult = search.getImageURI();
-            //        if (imageResult == "no image")
-            //            searchImage = "Content/images/Medicine.jpg";
-            //        else
-            //            searchImage = imageResult;
-            //    }
-            //    else
-            //    {
-            //        searchResponse = "The given term coudn't be found. Please try again.";
-            //        searchImage = "Content/images/Sad.jpg";
-            //    }
-            //}
+            if (searchEntry.Text != "")
+            {
+                searchSynonyms = new DailyMed().searchDrugs(searchEntry.Text);
+                search = new medsearch(searchEntry.Text);
+                searchResult = search.getAbstract();
+                if (searchResult != "invalid search query")
+                {
+                    searchResponse = searchResult;
+                    imageResult = search.getImageURI();
+                    if (imageResult == "no image")
+                        searchImage = "Content/images/Medicine.jpg";
+                    else
+                        searchImage = imageResult;
+                }
+                else
+                {
+                    searchResponse = "The given term coudn't be found. Please try again.";
+                    searchImage = "Content/images/Sad.jpg";
+                }
+            }
+            
         }
-
-        protected void findSynonyms()
+        protected void findSynonymsFromBing()
         {
             Uri syn = new Uri("https://api.datamarket.azure.com/Bing/Synonyms/v1/");
             BingSynonymsContainer a = new BingSynonymsContainer(syn);
