@@ -1,0 +1,35 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Net;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
+using System.Xml;
+
+namespace MedSearch
+{
+    public class DailyMed
+    {
+        public String searchDrugs(String drugname)
+        {
+            String URL = "http://dailymed.nlm.nih.gov/dailymed/services/v2/drugnames.xml?drug_name=" + drugname;
+            XmlDocument xdoc = new XmlDocument();
+            xdoc.Load(URL);
+            XmlNodeList xn = xdoc.SelectNodes("//drug_name");
+            String output = "<center>Related Medicine<center><br>";
+            if (xn.Count > 0)
+            {
+                for (int i = 0; i < xn.Count; i++)
+                {
+                    output += (i + 1) + ": " + xn[i].InnerXml + "<br>";
+                }
+            }
+            else
+            {
+                output += "No related medication available.";
+            }
+            return output;
+        }
+    }
+}

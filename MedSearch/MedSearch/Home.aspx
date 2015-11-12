@@ -9,6 +9,7 @@
     <link rel="Stylesheet" href="Content/jquery.mobile-1.4.5.min.css" />
     <script src="Scripts/jquery-1.8.0.min.js"></script>
     <script src="Scripts/jquery.mobile-1.4.5.min.js"></script>
+    
 </head>
 <body>
     <div data-role="page" id="pageone">
@@ -24,12 +25,16 @@
             <form id="form1" runat="server" onsubmit="performSearch">
 
                 <div class="ui-field-contain">
-                    <asp:Button runat="server" for="searchEntry" class="ui-btn ui-btn-inline ui-icon-search ui-btn-icon-left" href="#" onclick="performSearch" Text="Search"></asp:Button>
                     <asp:TextBox id="searchEntry" name= "searchEntry"  ToolTip="Search for drugs or symptoms" type="search" runat="server" AutoCompleteType="Search" OnTextChanged="performSearch"></asp:TextBox>
+                    <asp:Button runat="server" for="searchEntry" class="ui-btn ui-btn-inline ui-icon-search ui-btn-icon-left" href="#" onclick="performSearch" Text="Search"></asp:Button>
                 </div>
                 <div class="ui-grid-a ui-responsive">
-                    <div id="outputimg" class="ui-block-a"><img src="<%=searchImage%>" style="width:auto;height:auto;" /></div>
-                    <div id ="output" class="ui-block-b"><p class=" ui-shadow ui-corner-all" href="#" type="text"><%=searchResponse%></p></div>
+                    <div id="outputimg" class="ui-block-a"><div class="ui-bar ui-bar-a" style="height:auto;"><center><img src="<%=searchImage%>" style="width:auto;height:auto;" /></center></div></div>
+                    <div id ="output" class="ui-block-b"><div class="ui-bar ui-bar-a" style="height:auto;"><p class="ui-shadow ui-corner-all" type="text"><%=searchResponse%></p></div></div>
+                </div>
+                <div class="ui-grid-a ui-responsive">
+                    <div id="synm" class="ui-block-a"><div class="ui-bar ui-bar-a" style="height:auto;"><%=searchSynonyms%></div></div>
+                    <div id ="maps" class="ui-block-b"><div class="ui-bar ui-bar-a" style="height:auto;"><p class="ui-shadow ui-corner-all" type="text"><%=searchResponse%></p></div></div>
                 </div>
             </form>
     	</div>
@@ -73,5 +78,6 @@
 
     
         </div>
+    <script type='text/javascript' src='//www.bing.com/widget/bootstrap.js' data-visualization='linksandimages' data-carouselstate='auto' data-strength='aggressive' data-maxlinks='12' data-maxentitylinks='4' data-maxparagraphlinks='5' data-version='1.0b' data-autosnapshot='true' data-id='829a001add0c423c851b167315a8bd8f' data-options='dc=dashblack,cse=1' async></script>
 </body>
 </html>
