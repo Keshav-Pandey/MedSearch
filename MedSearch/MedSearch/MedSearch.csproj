@@ -300,6 +300,7 @@
     <Content Include="Content\jquery.mobile.structure-1.4.5.min.css" />
     <Content Include="Content\jquery.mobile.theme-1.4.5.css" />
     <Content Include="Content\jquery.mobile.theme-1.4.5.min.css" />
+    <Content Include="MedLocation.asmx" />
     <Content Include="packages.config" />
     <Content Include="Scripts\jquery.mobile-1.4.5.js" />
     <Content Include="Scripts\jquery.mobile-1.4.5.min.js" />
@@ -328,8 +329,11 @@
     <Compile Include="Home.aspx.designer.cs">
       <DependentUpon>Home.aspx</DependentUpon>
     </Compile>
+    <Compile Include="MedLocation.asmx.cs">
+      <DependentUpon>MedLocation.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="medsearch.cs" />
-    <Compile Include="PillBox.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <PropertyGroup>
