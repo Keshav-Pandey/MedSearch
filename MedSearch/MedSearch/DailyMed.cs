@@ -15,7 +15,15 @@ namespace MedSearch
         {
             String URL = "http://dailymed.nlm.nih.gov/dailymed/services/v2/drugnames.xml?drug_name=" + drugname;
             XmlDocument xdoc = new XmlDocument();
-            xdoc.Load(URL);
+            try
+            {
+                xdoc.Load(URL);
+            }
+            catch (Exception)
+            {
+
+                
+            }
             XmlNodeList xn = xdoc.SelectNodes("//drug_name");
             String output = "<center>Related Medicine<center><br>";
             if (xn.Count > 0)

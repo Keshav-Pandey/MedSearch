@@ -9,7 +9,7 @@
     <link rel="Stylesheet" href="Content/jquery.mobile-1.4.5.min.css" />
     <script src="Scripts/jquery-1.8.0.min.js"></script>
     <script src="Scripts/jquery.mobile-1.4.5.min.js"></script>
-    
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js"></script>
 </head>
 <body>
     <div data-role="page" id="pageone">
@@ -26,7 +26,7 @@
 
                 <div class="ui-field-contain">
                     <asp:TextBox id="searchEntry" name= "searchEntry"  ToolTip="Search for drugs or symptoms" type="search" runat="server" AutoCompleteType="Search" OnTextChanged="performSearch"></asp:TextBox>
-                    <asp:Button runat="server" for="searchEntry" class="ui-btn ui-btn-inline ui-icon-search ui-btn-icon-left" href="#" onclick="performSearch" Text="Search"></asp:Button>
+                    <asp:Button id="searchButton" runat="server" for="searchEntry" class="ui-btn ui-btn-inline ui-icon-search ui-btn-icon-left" href="#" onclick="performSearch" Text="Search"></asp:Button>
                 </div>
                 <div class="ui-grid-a ui-responsive">
                     <div id="outputimg" class="ui-block-a"><div class="ui-bar ui-bar-a" style="height:auto;"><center><img src="<%=searchImage%>" style="width:auto;height:auto;" /></center></div></div>
@@ -34,7 +34,7 @@
                 </div>
                 <div class="ui-grid-a ui-responsive">
                     <div id="synm" class="ui-block-a"><div class="ui-bar ui-bar-a" style="height:auto;"><%=searchSynonyms%></div></div>
-                    <div id ="maps" class="ui-block-b"><div class="ui-bar ui-bar-a" style="height:auto;"><p class="ui-shadow ui-corner-all" type="text"><%=searchResponse%></p></div></div>
+                    <div id ="maps" class="ui-block-b"><div class="ui-bar ui-bar-a" style="height:auto;"><center>Maps</center><div id="map_canvas"></div></div></div>
                 </div>
             </form>
     	</div>
@@ -78,6 +78,41 @@
 
     
         </div>
-    <script type='text/javascript' src='//www.bing.com/widget/bootstrap.js' data-visualization='linksandimages' data-carouselstate='auto' data-strength='aggressive' data-maxlinks='12' data-maxentitylinks='4' data-maxparagraphlinks='5' data-version='1.0b' data-autosnapshot='true' data-id='829a001add0c423c851b167315a8bd8f' data-options='dc=dashblack,cse=1' async></script>
+    <script type="text/javascript">
+        var sb = document.getElementById("searchButton");
+        sb.addEventListener(onclick, searchMap, false);
+        function searchMap()
+        {
+            alert("asd");
+            var mapOptions = {
+            center: myLatLng,
+            zoom: 12,
+            mapTypeId: google.maps.MapTypeId.ROADMAP // There are atleast 4 types of maps
+            };
+            var map = new google.maps.Map(document.getElementById("map_canvas"),mapOptions);
+            xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = populate;
+            xhr.open("GET","MedWebservice.asmx",true);
+            xhr.send();
+        }
+        function populate()
+        {
+            if(xhr.readyState == 4 && xhr.status == 200)
+            {
+                var a = xhr.resposeText;
+                var points = a.split(";");
+                for(i =0;i<points.length;i++)
+                {
+                    latlngs = points.split(":")[1].split(",");
+                    var myLatLng = new google.maps.LatLng(latlngs[0],latlngs[1]);
+                    var marker = new google.maps.Marker({
+                        position: myLatLng,
+                        map: map,
+                        title:points.split(":")[0]
+                    });
+                }
+            }
+        }
+    </script>
 </body>
 </html>
