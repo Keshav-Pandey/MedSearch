@@ -8,7 +8,6 @@ using System.Web.UI.WebControls;
 using VDS.RDF;
 using VDS.RDF.Query;
 using VDS.RDF.Parsing;
-using BingSynonyms;
 
 namespace MedSearch
 {
@@ -129,21 +128,23 @@ namespace MedSearch
         public string searchImage = "Content/images/Medicine.jpg";
         public string imageResult = "no image";
         public string searchSynonyms = "No related medicine.";
+        public string mapdata = ";";
 
         medsearch search;
         protected void Page_Load(object sender, EventArgs e)
         {
             
         }
-
+        
         protected void performSearch(object sender, EventArgs e)
         {
-            
-            if (searchEntry.Text != "")
+            String se = searchEntry.Text;
+            if ( se!= "")
             {
                 searchSynonyms = new DailyMed().searchDrugs(searchEntry.Text);
                 search = new medsearch(searchEntry.Text);
                 searchResult = search.getAbstract();
+                relsr.Text = searchSynonyms;
                 if (searchResult != "invalid search query")
                 {
                     searchResponse = searchResult;
@@ -158,27 +159,37 @@ namespace MedSearch
                     searchResponse = "The given term coudn't be found. Please try again.";
                     searchImage = "Content/images/Sad.jpg";
                 }
+                srp.Text = searchResponse;
+                mimg.ImageUrl = searchImage;
+                populateMap(se);
+                System.Diagnostics.Debug.WriteLine(searchResponse);
             }
-            
+
         }
 
-        protected async void populateMap()
+        protected void populateMap(String tr)
         {
-            HttpWebRequest WebReq = (HttpWebRequest)WebRequest.Create("http://127.0.0.1/test.php");
+            HttpWebRequest WebReq = (HttpWebRequest)WebRequest.Create("http://localhost:61028/MedLocation.asmx/GetLocations");
+            byte[] buffer = System.Text.Encoding.ASCII.GetBytes("term="+tr);
+            WebReq.Method = "POST";
+            //We use form contentType, for the postvars.
+            WebReq.ContentType = "application/x-www-form-urlencoded";
+            //The length of the buffer (postvars) is used as contentlength.
+            WebReq.ContentLength = buffer.Length;
+            //We open a stream for writing the postvars
+            System.IO.Stream PostData = WebReq.GetRequestStream();
+            //Now we write, and afterwards, we close. Closing is always important!
+            PostData.Write(buffer, 0, buffer.Length);
+            PostData.Close();
             HttpWebResponse WebResp = (HttpWebResponse)WebReq.GetResponse();
             System.IO.Stream Answer = WebResp.GetResponseStream();
             System.IO.StreamReader _Answer = new System.IO.StreamReader(Answer);
-            Console.WriteLine(_Answer.ReadToEnd());
-            
-        }
-        protected void findSynonymsFromBing()
-        {
-            Uri syn = new Uri("https://api.datamarket.azure.com/Bing/Synonyms/v1/");
-            BingSynonymsContainer a = new BingSynonymsContainer(syn);
-            //GetSynonymsEntitySet ans = a.GetSynonyms("");
-            //ans = a.GetSynonyms("canon 400d");
-            //searchSynonyms = a.GetSynonyms("canon 600d");
-            System.Diagnostics.Debug.WriteLine(a.GetSynonyms("canon 400d"));
+            String data = _Answer.ReadToEnd();
+            WebResp.Close();
+            data = data.Substring(data.LastIndexOf("\">") + 2, (data.LastIndexOf(";")-(data.LastIndexOf("\">") + 1)));
+            System.Diagnostics.Debug.WriteLine(data);
+            mapdata = data;
+            ScriptManager.RegisterStartupScript(this, GetType(), "populate", "populate('"+data+"');", true);
         }
     }
 }
