@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -137,6 +138,7 @@ namespace MedSearch
 
         protected void performSearch(object sender, EventArgs e)
         {
+            
             if (searchEntry.Text != "")
             {
                 searchSynonyms = new DailyMed().searchDrugs(searchEntry.Text);
@@ -157,6 +159,16 @@ namespace MedSearch
                     searchImage = "Content/images/Sad.jpg";
                 }
             }
+            
+        }
+
+        protected async void populateMap()
+        {
+            HttpWebRequest WebReq = (HttpWebRequest)WebRequest.Create("http://127.0.0.1/test.php");
+            HttpWebResponse WebResp = (HttpWebResponse)WebReq.GetResponse();
+            System.IO.Stream Answer = WebResp.GetResponseStream();
+            System.IO.StreamReader _Answer = new System.IO.StreamReader(Answer);
+            Console.WriteLine(_Answer.ReadToEnd());
             
         }
         protected void findSynonymsFromBing()
