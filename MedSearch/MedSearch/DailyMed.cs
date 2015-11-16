@@ -19,13 +19,12 @@ namespace MedSearch
             {
                 xdoc.Load(URL);
             }
-            catch (Exception)
+            catch (Exception e)
             {
-
-                
+                System.Diagnostics.Debug.WriteLine(e.Message);                
             }
             XmlNodeList xn = xdoc.SelectNodes("//drug_name");
-            String output = "<center>Related Medicine<center><br>";
+            String output = "<center>Related Terms<center><br>";
             if (xn.Count > 0)
             {
                 for (int i = 0; i < xn.Count; i++)

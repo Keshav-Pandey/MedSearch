@@ -22,23 +22,32 @@
         </div>
 
 	    <div role="main" class="ui-content">
-            <form id="form1" runat="server" onsubmit="performSearch">
+            <form id="form1" runat="server">
 
                 <div class="ui-field-contain">
-                    <asp:TextBox id="searchEntry" name= "searchEntry"  ToolTip="Search for drugs or symptoms" type="search" runat="server" AutoCompleteType="Search" OnTextChanged="performSearch"></asp:TextBox>
-                    <asp:Button id="searchButton" runat="server" for="searchEntry" class="ui-btn ui-btn-inline ui-icon-search ui-btn-icon-left" href="#" onclick="performSearch" Text="Search"></asp:Button>
+                    <asp:TextBox ID="searchEntry" name= "searchEntry"  ToolTip="Search for drugs or symptoms" type="search" runat="server" AutoCompleteType="Search"></asp:TextBox>
+                    <asp:Button ID="searchButton" runat="server" for="searchEntry" class="ui-btn ui-btn-inline ui-icon-search ui-btn-icon-left" href="#" onclick="performSearch" Text="Search" ></asp:Button>
                 </div>
+                <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
+                <asp:UpdatePanel ID="UpdatePanel1" runat="server" >
+                    <Triggers>
+                            <asp:AsyncPostBackTrigger ControlID="searchButton" EventName="Click" />
+                    </Triggers>
+                    <ContentTemplate>
                 <div class="ui-grid-a ui-responsive">
-                    <div id="outputimg" class="ui-block-a"><div class="ui-bar ui-bar-a" style="height:auto;"><center><img src="<%=searchImage%>" style="width:auto;height:auto;" /></center></div></div>
-                    <div id ="output" class="ui-block-b"><div class="ui-bar ui-bar-a" style="height:auto;"><p class="ui-shadow ui-corner-all" type="text"><%=searchResponse%></p></div></div>
+                    <div id="outputimg" class="ui-block-a"><div class="ui-bar ui-bar-a" style="height:auto;"><center><asp:Image ID="mimg" runat="server"  ImageURL="Content/images/Medicine.jpg" style="width:auto;height:auto;" /></center></div></div>
+                    <div id ="output" class="ui-block-b"><div class="ui-bar ui-bar-a" style="height:auto;"><asp:Label id="srp" runat="server" class="ui-shadow ui-corner-all" type="text">MedSearch provides search which takes advantage of linked datasets.</asp:Label></div></div>
                 </div>
-                <div class="ui-grid-a ui-responsive">
-                    <div id="synm" class="ui-block-a"><div class="ui-bar ui-bar-a" style="height:auto;"><%=searchSynonyms%></div></div>
-                    <div id ="maps" class="ui-block-b"><div class="ui-bar ui-bar-a" style="height:auto;"><center>Maps</center><div id="map_canvas"></div></div></div>
+                <div class="ui-grid-solo ui-responsive">
+                    <div id="synm" class="ui-block-a"><asp:Label id="relsr" runat="server" class="ui-bar ui-bar-a" style="height:auto;"><center>Related Terms</center><br /><center>Here you can find related terms to the query that you enter.</center></asp:Label></div>
+                </div>
+                    </ContentTemplate>
+                </asp:UpdatePanel>
+                <div class="ui-grid-solo ui-responsive">
+                    <div id ="maps" class="ui-block-a"><div class="ui-bar ui-bar-a" style="height:auto;"><center>Maps</center><div id="map_canvas" style="width:100%;height:300px;border:solid 1px blue;"></div></div></div>
                 </div>
             </form>
     	</div>
-
         <!-- Login panel , will see what to do with it later -->
         <div data-role="panel" data-position="right" data-position-fixed="true" data-display="overlay" data-theme="a" id="add-form">
 
@@ -47,10 +56,10 @@
         	<h2>Login</h2>
 
             <label for="name">Username:</label>
-            <input type="text" name="name" id="name" value="" data-clear-btn="true" data-mini="true">
+            <input type="text" name="name" id="name" value="" data-clear-btn="true" data-mini="true" />
 
             <label for="password">Password:</label>
-            <input type="password" name="password" id="password" value="" data-clear-btn="true" autocomplete="off" data-mini="true">
+            <input type="password" name="password" id="password" value="" data-clear-btn="true" autocomplete="off" data-mini="true" />
 
             <div class="ui-grid-a">
                 <div class="ui-block-a"><a href="#" data-rel="close" class="ui-btn ui-shadow ui-corner-all ui-btn-b ui-mini">Cancel</a></div>
@@ -79,36 +88,35 @@
     
         </div>
     <script type="text/javascript">
+        window.onload = initmap;
         var sb = document.getElementById("searchButton");
-        sb.addEventListener(onclick, searchMap, false);
-        function searchMap()
+        var map;
+        var myLatLng = new google.maps.LatLng(12.9342678, 77.53432629999998);
+        var mapOptions;
+        var marker;
+        function initmap()
         {
-            alert("asd");
-            var mapOptions = {
-            center: myLatLng,
-            zoom: 12,
-            mapTypeId: google.maps.MapTypeId.ROADMAP // There are atleast 4 types of maps
+            myLatLng = new google.maps.LatLng(12.9342678, 77.53432629999998);
+            mapOptions = {
+                center: myLatLng,
+                zoom: 3,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
             };
-            var map = new google.maps.Map(document.getElementById("map_canvas"),mapOptions);
-            xhr = new XMLHttpRequest();
-            xhr.onreadystatechange = populate;
-            xhr.open("GET","MedWebservice.asmx",true);
-            xhr.send();
+            map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
         }
-        function populate()
+        function populate(response)
         {
-            if(xhr.readyState == 4 && xhr.status == 200)
+            if(response.length>1)
             {
-                var a = xhr.resposeText;
-                var points = a.split(";");
-                for(i =0;i<points.length;i++)
+                var points = response.split(";");
+                for (i = 0; i < points.length - 1; i++)
                 {
-                    latlngs = points.split(":")[1].split(",");
-                    var myLatLng = new google.maps.LatLng(latlngs[0],latlngs[1]);
-                    var marker = new google.maps.Marker({
+                    var latlngs = points[i].split(":")[1].split(",");
+                    var myLatLng = new google.maps.LatLng(parseFloat(latlngs[0]), parseFloat(latlngs[1]));
+                    marker = new google.maps.Marker({
                         position: myLatLng,
                         map: map,
-                        title:points.split(":")[0]
+                        title: points[i].split(":")[0]
                     });
                 }
             }
