@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using VDS.RDF;
 using VDS.RDF.Query;
 using VDS.RDF.Parsing;
+using System.Threading;
 
 namespace dnrdfSample
 {
@@ -28,6 +29,8 @@ namespace dnrdfSample
             type = "none";
             imageURI = "none";
             buildSearch();
+            string s2 = Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(q.ToLower());
+            searchTerm = s2;
         }
         private void buildSearch()
         {
@@ -85,6 +88,22 @@ namespace dnrdfSample
             return abst;
         }
         public string getImageURI()
+        {
+            var query = "";
+            string resUri = "<" + searchURI + ">";
+            query = "select ?out WHERE {" + resUri + " <http://dbpedia.org/ontology/thumbnail> ?out}";
+            SparqlResultSet results = endpoint.QueryWithResultSet(query);
+            if (results.Count == 0)
+            {
+                return "no image";
+            }
+            else
+            {
+                imageURI = results.First().ToString().Substring(7);
+            }
+            return imageURI;
+        }
+        public string getLocation()
         {
             var query = "";
             string resUri = "<" + searchURI + ">";
