@@ -189,6 +189,7 @@ namespace MedSearch
             data = data.Substring(data.LastIndexOf("\">") + 2, (data.LastIndexOf(";")-(data.LastIndexOf("\">") + 1)));
             System.Diagnostics.Debug.WriteLine(data);
             mapdata = data;
+            ScriptManager.RegisterStartupScript(this, GetType(), "initmap", "initmap()", true);
             ScriptManager.RegisterStartupScript(this, GetType(), "populate", "populate('"+data+"');", true);
         }
     }
